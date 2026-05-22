@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hasil Nilai — E-LKPD Meyola</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --blue-900: #042C53;
+  --blue-800: #0C447C;
+  --blue-700: #185FA5;
+  --blue-600: #1565C0;
+  --blue-400: #378ADD;
+  --blue-200: #85B7EB;
+  --blue-100: #B5D4F4;
+  --blue-50:  #E6F1FB;
+  --blue-10:  #F0F7FF;
+  --green-700: #27500A;
+  --green-100: #C0DD97;
+  --green-50:  #EAF3DE;
+  --red-700:   #791F1F;
+  --red-50:    #FCEBEB;
+  --amber-700: #633806;
+  --amber-50:  #FAEEDA;
+  --gray-100:  #F5F6F7;
+  --gray-200:  #E8EAED;
+  --gray-400:  #9AA0A6;
+  --gray-700:  #3C4043;
+  --white:     #FFFFFF;
+  --font: 'Plus Jakarta Sans', sans-serif;
+  --mono: 'DM Mono', monospace;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--blue-10);
+  color: var(--gray-700);
+  min-height: 100vh;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  background: var(--blue-600);
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.brand-dot {
+  width: 28px; height: 28px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+}
+.brand-dot svg { width: 16px; height: 16px; }
+.brand-name { font-size: 14px; font-weight: 700; color: var(--white); letter-spacing: -0.2px; }
+.topbar-nav { display: flex; gap: 4px; }
+.nav-btn {
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font);
+  cursor: pointer;
+  border: none;
+  transition: background 0.15s;
+  color: rgba(255,255,255,0.75);
+  background: transparent;
+}
+.nav-btn:hover { background: rgba(255,255,255,0.1); color: var(--white); }
+.nav-btn.active { background: rgba(255,255,255,0.18); color: var(--white); }
+
+/* ── HERO ── */
+.hero {
+  background: var(--blue-600);
+  padding: 40px 32px 56px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 32px;
+  background: var(--blue-10);
+  border-radius: 32px 32px 0 0;
+}
+.hero-inner { max-width: 720px; margin: 0 auto; }
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.12);
+  color: var(--blue-100);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 99px;
+  margin-bottom: 14px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.hero-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+.hero-sub {
+  font-size: 14px;
+  color: var(--blue-100);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+.hero-stats {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.hero-stat {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: var(--radius-md);
+  padding: 10px 16px;
+  min-width: 100px;
+}
+.hero-stat-val { font-size: 22px; font-weight: 800; color: var(--white); font-family: var(--mono); }
+.hero-stat-lbl { font-size: 11px; color: var(--blue-100); margin-top: 2px; }
+
+/* ── MAIN LAYOUT ── */
+.main { max-width: 720px; margin: 0 auto; padding: 24px 32px 64px; }
+
+/* ── VIEWS ── */
+.view { display: none; }
+.view.active { display: block; }
+
+/* ── SECTION HEADER ── */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--blue-800);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-title svg { width: 18px; height: 18px; }
+
+/* ── ROLE SELECTOR (Siswa view) ── */
+.role-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-xl);
+  padding: 28px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.role-title { font-size: 17px; font-weight: 700; color: var(--blue-800); margin-bottom: 6px; }
+.role-sub { font-size: 13px; color: var(--gray-400); margin-bottom: 20px; }
+.search-row {
+  display: flex;
+  gap: 8px;
+}
+.search-input {
+  flex: 1;
+  height: 44px;
+  border: 1.5px solid var(--blue-100);
+  border-radius: var(--radius-md);
+  padding: 0 16px;
+  font-size: 14px;
+  font-family: var(--font);
+  color: var(--gray-700);
+  background: var(--blue-10);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.search-input:focus { border-color: var(--blue-600); background: var(--white); }
+.btn-primary {
+  height: 44px;
+  padding: 0 20px;
+  background: var(--blue-600);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  white-space: nowrap;
+}
+.btn-primary:hover { background: var(--blue-700); }
+.btn-primary:active { transform: scale(0.98); }
+
+/* ── NILAI CARD (siswa view result) ── */
+.nilai-result { display: none; }
+.nilai-result.show { display: block; }
+.student-profile {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.profile-header {
+  background: var(--blue-600);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.profile-avatar {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 800; color: var(--white);
+  flex-shrink: 0;
+}
+.profile-name { font-size: 17px; font-weight: 700; color: var(--white); }
+.profile-kelas { font-size: 12px; color: var(--blue-100); margin-top: 2px; }
+.profile-body { padding: 20px 24px; }
+
+.bab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.bab-tile {
+  background: var(--blue-10);
+  border: 1px solid var(--blue-100);
+  border-radius: var(--radius-md);
+  padding: 14px;
+}
+.bab-tile-header { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; }
+.bab-pill {
+  background: var(--blue-600);
+  color: var(--white);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 99px;
+  letter-spacing: 0.04em;
+}
+.bab-tile-name { font-size: 12px; font-weight: 600; color: var(--blue-800); }
+.bab-score-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 6px; }
+.bab-score { font-size: 26px; font-weight: 800; color: var(--blue-800); font-family: var(--mono); }
+.bab-pred { font-size: 14px; font-weight: 700; padding: 2px 10px; border-radius: 99px; }
+.pred-a { background: var(--green-50); color: var(--green-700); }
+.pred-b { background: var(--blue-50); color: var(--blue-800); }
+.pred-c { background: var(--amber-50); color: var(--amber-700); }
+.pred-d { background: var(--red-50); color: var(--red-700); }
+.bab-catatan { font-size: 11px; color: var(--gray-400); font-style: italic; line-height: 1.5; }
+
+.summary-strip {
+  background: var(--blue-800);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.sum-item { text-align: center; }
+.sum-val { font-size: 22px; font-weight: 800; color: var(--white); font-family: var(--mono); }
+.sum-lbl { font-size: 10px; color: var(--blue-200); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.06em; }
+.sum-divider { width: 1px; height: 36px; background: rgba(255,255,255,0.15); }
+.status-badge {
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.status-tuntas { background: var(--green-50); color: var(--green-700); }
+.status-belum { background: var(--red-50); color: var(--red-700); }
+
+/* ── INPUT FORM (guru view) ── */
+.form-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.form-card-header {
+  background: var(--blue-600);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.form-card-title { font-size: 14px; font-weight: 700; color: var(--white); }
+.form-card-sub { font-size: 12px; color: var(--blue-100); margin-top: 1px; }
+.form-body { padding: 24px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.form-row.single { grid-template-columns: 1fr; }
+.field-group { display: flex; flex-direction: column; gap: 5px; }
+.field-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--blue-700);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.req { color: #E24B4A; }
+.field-input, .field-select, .field-textarea {
+  height: 40px;
+  border: 1.5px solid var(--blue-100);
+  border-radius: var(--radius-sm);
+  padding: 0 12px;
+  font-size: 13px;
+  font-family: var(--font);
+  color: var(--gray-700);
+  background: var(--blue-10);
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+.field-input:focus, .field-select:focus, .field-textarea:focus {
+  border-color: var(--blue-600);
+  background: var(--white);
+}
+.field-textarea { height: 60px; padding: 10px 12px; resize: none; }
+.field-input[type="number"] { font-family: var(--mono); font-weight: 500; }
+
+.bab-section {
+  background: var(--blue-10);
+  border: 1px solid var(--blue-100);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-bottom: 10px;
+}
+.bab-section-header { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+.bab-section-name { font-size: 13px; font-weight: 600; color: var(--blue-800); }
+.bab-auto-pred {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 99px;
+  min-width: 36px;
+  text-align: center;
+  background: var(--gray-200);
+  color: var(--gray-400);
+  font-family: var(--mono);
+  transition: background 0.2s, color 0.2s;
+}
+
+.form-divider { height: 1px; background: var(--gray-200); margin: 16px 0; }
+.btn-submit {
+  width: 100%;
+  height: 48px;
+  background: var(--blue-600);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-weight: 700;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  letter-spacing: 0.01em;
+}
+.btn-submit:hover { background: var(--blue-700); }
+.btn-submit:active { transform: scale(0.99); }
+.btn-submit:disabled { background: var(--gray-200); color: var(--gray-400); cursor: not-allowed; transform: none; }
+
+/* ── REKAP TABLE ── */
+.rekap-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+.rekap-header {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--gray-200);
+}
+.rekap-title { font-size: 14px; font-weight: 700; color: var(--blue-800); }
+.rekap-count { font-size: 12px; color: var(--gray-400); }
+.filter-bar {
+  padding: 10px 20px;
+  display: flex;
+  gap: 6px;
+  border-bottom: 1px solid var(--gray-200);
+  background: var(--gray-100);
+  flex-wrap: wrap;
+}
+.filter-btn {
+  padding: 5px 12px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--font);
+  cursor: pointer;
+  border: 1px solid var(--gray-200);
+  background: var(--white);
+  color: var(--gray-400);
+  transition: all 0.15s;
+}
+.filter-btn.active { background: var(--blue-600); color: var(--white); border-color: var(--blue-600); }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+thead th {
+  background: var(--blue-10);
+  color: var(--blue-800);
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 10px 12px;
+  text-align: center;
+  border-bottom: 1px solid var(--blue-100);
+  white-space: nowrap;
+}
+thead th:first-child { text-align: left; }
+tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--gray-200);
+  text-align: center;
+  color: var(--gray-700);
+  vertical-align: middle;
+}
+tbody td:first-child { text-align: left; font-weight: 600; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: var(--blue-10); }
+.score-val { font-family: var(--mono); font-size: 13px; font-weight: 500; }
+.score-high { color: var(--green-700); }
+.score-mid { color: var(--blue-800); }
+.score-low { color: var(--amber-700); }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 24px; right: 24px;
+  background: var(--blue-800);
+  color: var(--white);
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transform: translateY(80px);
+  opacity: 0;
+  transition: transform 0.3s, opacity 0.3s;
+  z-index: 999;
+  max-width: 320px;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.error { background: #C62828; }
+.toast svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+/* ── LOADING ── */
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 32px;
+  color: var(--gray-400);
+  font-size: 13px;
+}
+.spinner {
+  width: 18px; height: 18px;
+  border: 2px solid var(--blue-100);
+  border-top-color: var(--blue-600);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--gray-400);
+}
+.empty-state svg { width: 40px; height: 40px; margin-bottom: 10px; opacity: 0.4; }
+.empty-state p { font-size: 13px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  .main { padding: 16px; }
+  .hero { padding: 24px 16px 48px; }
+  .topbar { padding: 0 16px; }
+  .bab-grid { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .hero-stats { gap: 8px; }
+}
+
+/* ── LOGIN MODAL ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(4,44,83,0.65);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+.modal-overlay.show { opacity: 1; pointer-events: all; }
+.modal-box {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  width: 100%;
+  max-width: 360px;
+  margin: 16px;
+  overflow: hidden;
+  transform: translateY(24px) scale(0.97);
+  transition: transform 0.25s;
+  box-shadow: 0 20px 60px rgba(4,44,83,0.3);
+}
+.modal-overlay.show .modal-box { transform: translateY(0) scale(1); }
+.modal-header {
+  background: var(--blue-600);
+  padding: 28px 24px 22px;
+  text-align: center;
+}
+.modal-lock-icon {
+  width: 52px; height: 52px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 14px;
+}
+.modal-lock-icon svg { width: 26px; height: 26px; }
+.modal-title { font-size: 18px; font-weight: 800; color: var(--white); margin-bottom: 4px; }
+.modal-sub { font-size: 13px; color: var(--blue-100); }
+.modal-body { padding: 24px; }
+.modal-field { margin-bottom: 14px; }
+.modal-body .field-input { width: 100%; }
+.login-error {
+  font-size: 12px;
+  color: #C62828;
+  background: #FCEBEB;
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  margin-bottom: 14px;
+  display: none;
+}
+.login-error.show { display: block; }
+.btn-cancel {
+  width: 100%;
+  height: 42px;
+  background: transparent;
+  color: var(--gray-400);
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font);
+  cursor: pointer;
+  margin-top: 8px;
+  transition: all 0.15s;
+}
+.btn-cancel:hover { border-color: var(--blue-200); color: var(--blue-700); }
+
+/* ── TOPBAR USER CHIP ── */
+.topbar-right { display: flex; align-items: center; gap: 8px; }
+.topbar-user {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: var(--radius-md);
+  padding: 5px 10px 5px 8px;
+}
+.topbar-user-avatar {
+  width: 26px; height: 26px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 800; color: var(--white);
+  flex-shrink: 0;
+}
+.topbar-user-info { display: flex; flex-direction: column; line-height: 1; }
+.topbar-user-name { font-size: 12px; font-weight: 700; color: var(--white); }
+.topbar-user-role { font-size: 10px; color: var(--blue-100); margin-top: 2px; }
+.btn-logout {
+  font-size: 11px; font-weight: 600;
+  color: var(--blue-200);
+  background: none; border: none; cursor: pointer;
+  font-family: var(--font);
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  transition: all 0.15s;
+  margin-left: 2px;
+}
+.btn-logout:hover { background: rgba(255,255,255,0.1); color: var(--white); }
+.nav-lock { display: inline-flex; vertical-align: middle; margin-right: 3px; opacity: 0.55; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-brand">
+    <div class="brand-dot">
+      <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" fill="white"/><rect x="9" y="2" width="5" height="5" rx="1" fill="white" opacity=".6"/><rect x="2" y="9" width="5" height="5" rx="1" fill="white" opacity=".6"/><rect x="9" y="9" width="5" height="5" rx="1" fill="white" opacity=".3"/></svg>
+    </div>
+    <span class="brand-name">E-LKPD Meyola</span>
+  </div>
+  <div class="topbar-right">
+    <div class="topbar-nav">
+      <button class="nav-btn active" id="btn-nav-siswa" onclick="switchView('siswa', this)">Nilai Saya</button>
+      <button class="nav-btn" id="btn-nav-guru" onclick="switchView('guru', this)">
+        <svg class="nav-lock" width="11" height="11" viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="2" stroke="currentColor" stroke-width="2.2"/><path d="M5 7V5a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>Input Nilai
+      </button>
+      <button class="nav-btn" id="btn-nav-rekap" onclick="switchView('rekap', this)">Rekap Kelas</button>
+    </div>
+    <div class="topbar-user" id="topbar-user">
+      <div class="topbar-user-avatar" id="topbar-user-avatar">G</div>
+      <div class="topbar-user-info">
+        <span class="topbar-user-name" id="topbar-user-name">Guru</span>
+        <span class="topbar-user-role">Guru Penilai</span>
+      </div>
+      <button class="btn-logout" onclick="doLogout()">Keluar</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="5" fill="currentColor" opacity=".6"/></svg>
+      Sistem Penilaian
+    </div>
+    <div class="hero-title">Hasil Nilai E-LKPD</div>
+    <div class="hero-sub">Cek nilai kamu per materi, atau lihat rekap keseluruhan kelas.</div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-val" id="stat-total">—</div>
+        <div class="hero-stat-lbl">Total siswa</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-val" id="stat-tuntas">—</div>
+        <div class="hero-stat-lbl">Tuntas</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-val" id="stat-avg">—</div>
+        <div class="hero-stat-lbl">Rata-rata kelas</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- VIEW: SISWA -->
+  <div class="view active" id="view-siswa">
+    <div class="role-card">
+      <div class="role-title">Cek Nilai Kamu</div>
+      <div class="role-sub">Masukkan nama kamu untuk melihat nilai per bab</div>
+      <div class="search-row">
+        <input class="search-input" type="text" id="search-nama" placeholder="Ketik nama kamu..." onkeydown="if(event.key==='Enter')cariNilai()">
+        <button class="btn-primary" onclick="cariNilai()">Cari</button>
+      </div>
+    </div>
+
+    <div class="nilai-result" id="nilai-result">
+      <!-- diisi JS -->
+    </div>
+  </div>
+
+  <!-- VIEW: GURU -->
+  <div class="view" id="view-guru">
+    <div class="form-card">
+      <div class="form-card-header">
+        <div>
+          <div class="form-card-title">Input Nilai Siswa</div>
+          <div class="form-card-sub">Isi nilai untuk setiap bab — predikat otomatis</div>
+        </div>
+      </div>
+      <div class="form-body">
+        <div class="form-row">
+          <div class="field-group">
+            <label class="field-label">Nama Siswa <span class="req">*</span></label>
+            <input class="field-input" type="text" id="f-nama" placeholder="Nama lengkap..." />
+          </div>
+          <div class="field-group">
+            <label class="field-label">Kelas <span class="req">*</span></label>
+            <select class="field-select" id="f-kelas">
+              <option value="">Pilih kelas...</option>
+              <option>Kelas X</option>
+              <option>Kelas XI</option>
+              <option>Kelas XII</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="bab-sections">
+          <!-- BAB 1 -->
+          <div class="bab-section">
+            <div class="bab-section-header">
+              <span class="bab-pill">BAB 1</span>
+              <span class="bab-section-name">Materi Bab 1</span>
+              <span class="bab-auto-pred" id="ap1">—</span>
+            </div>
+            <div class="form-row">
+              <div class="field-group">
+                <label class="field-label">Nilai <span class="req">*</span></label>
+                <input class="field-input" type="number" id="n1" min="0" max="100" placeholder="0–100" oninput="autoPredikat(1)">
+              </div>
+              <div class="field-group">
+                <label class="field-label">Predikat</label>
+                <select class="field-select" id="p1">
+                  <option value="">Otomatis...</option>
+                  <option>A</option><option>B</option><option>C</option><option>D</option>
+                </select>
+              </div>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Catatan Guru</label>
+              <textarea class="field-textarea" id="c1" placeholder="Catatan atau komentar untuk bab ini..."></textarea>
+            </div>
+          </div>
+          <!-- BAB 2 -->
+          <div class="bab-section">
+            <div class="bab-section-header">
+              <span class="bab-pill">BAB 2</span>
+              <span class="bab-section-name">Materi Bab 2</span>
+              <span class="bab-auto-pred" id="ap2">—</span>
+            </div>
+            <div class="form-row">
+              <div class="field-group">
+                <label class="field-label">Nilai <span class="req">*</span></label>
+                <input class="field-input" type="number" id="n2" min="0" max="100" placeholder="0–100" oninput="autoPredikat(2)">
+              </div>
+              <div class="field-group">
+                <label class="field-label">Predikat</label>
+                <select class="field-select" id="p2">
+                  <option value="">Otomatis...</option>
+                  <option>A</option><option>B</option><option>C</option><option>D</option>
+                </select>
+              </div>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Catatan Guru</label>
+              <textarea class="field-textarea" id="c2" placeholder="Catatan atau komentar untuk bab ini..."></textarea>
+            </div>
+          </div>
+          <!-- BAB 3 -->
+          <div class="bab-section">
+            <div class="bab-section-header">
+              <span class="bab-pill">BAB 3</span>
+              <span class="bab-section-name">Materi Bab 3</span>
+              <span class="bab-auto-pred" id="ap3">—</span>
+            </div>
+            <div class="form-row">
+              <div class="field-group">
+                <label class="field-label">Nilai <span class="req">*</span></label>
+                <input class="field-input" type="number" id="n3" min="0" max="100" placeholder="0–100" oninput="autoPredikat(3)">
+              </div>
+              <div class="field-group">
+                <label class="field-label">Predikat</label>
+                <select class="field-select" id="p3">
+                  <option value="">Otomatis...</option>
+                  <option>A</option><option>B</option><option>C</option><option>D</option>
+                </select>
+              </div>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Catatan Guru</label>
+              <textarea class="field-textarea" id="c3" placeholder="Catatan atau komentar untuk bab ini..."></textarea>
+            </div>
+          </div>
+          <!-- BAB 4 -->
+          <div class="bab-section">
+            <div class="bab-section-header">
+              <span class="bab-pill">BAB 4</span>
+              <span class="bab-section-name">Materi Bab 4</span>
+              <span class="bab-auto-pred" id="ap4">—</span>
+            </div>
+            <div class="form-row">
+              <div class="field-group">
+                <label class="field-label">Nilai <span class="req">*</span></label>
+                <input class="field-input" type="number" id="n4" min="0" max="100" placeholder="0–100" oninput="autoPredikat(4)">
+              </div>
+              <div class="field-group">
+                <label class="field-label">Predikat</label>
+                <select class="field-select" id="p4">
+                  <option value="">Otomatis...</option>
+                  <option>A</option><option>B</option><option>C</option><option>D</option>
+                </select>
+              </div>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Catatan Guru</label>
+              <textarea class="field-textarea" id="c4" placeholder="Catatan atau komentar untuk bab ini..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-divider"></div>
+        <div class="form-row">
+          <div class="field-group">
+            <label class="field-label">Nama Guru Penilai</label>
+            <input class="field-input" type="text" id="f-guru" placeholder="Nama guru...">
+          </div>
+        </div>
+        <button class="btn-submit" id="btn-submit" onclick="submitNilai()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.5 4.5L6.5 11.5L2.5 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Simpan Penilaian ke Sheets
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW: REKAP -->
+  <div class="view" id="view-rekap">
+    <div class="rekap-card">
+      <div class="rekap-header">
+        <div class="rekap-title">Rekap Nilai Semua Siswa</div>
+        <div class="rekap-count" id="rekap-count">Memuat...</div>
+      </div>
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterRekap('semua', this)">Semua</button>
+        <button class="filter-btn" onclick="filterRekap('tuntas', this)">Tuntas</button>
+        <button class="filter-btn" onclick="filterRekap('belum', this)">Belum Tuntas</button>
+        <button class="filter-btn" onclick="filterRekap('A', this)">Predikat A</button>
+        <button class="filter-btn" onclick="filterRekap('B', this)">Predikat B</button>
+      </div>
+      <div class="table-wrap" id="table-wrap">
+        <div class="loader"><div class="spinner"></div> Memuat data...</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="modal-login" onclick="handleModalBackdrop(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-lock-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+      </div>
+      <div class="modal-title">Login Guru</div>
+      <div class="modal-sub">Halaman ini hanya untuk guru penilai</div>
+    </div>
+    <div class="modal-body">
+      <div class="login-error" id="login-error">Username atau password salah. Coba lagi.</div>
+      <div class="modal-field">
+        <div class="field-group">
+          <label class="field-label">Username</label>
+          <input class="field-input" type="text" id="login-user" placeholder="Masukkan username..." autocomplete="username">
+        </div>
+      </div>
+      <div class="modal-field">
+        <div class="field-group">
+          <label class="field-label">Password</label>
+          <input class="field-input" type="password" id="login-pass" placeholder="Masukkan password..." autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+        </div>
+      </div>
+      <button class="btn-submit" onclick="doLogin()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        Masuk
+      </button>
+      <button class="btn-cancel" onclick="closeLoginModal()">Batal</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 16 16" fill="none"><path d="M13.5 4.5L6.5 11.5L2.5 7.5" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+  <span id="toast-msg">Berhasil!</span>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// GANTI URL INI dengan URL deploy Google Apps Script kamu
+// Cara: Apps Script → Deploy → New deployment → Web app
+// ─────────────────────────────────────────────
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyP5ODObrLcWKd-7x3dP5LVJYmTGetczhN38S_KLj7co9lf3qbGyq2bbNSSLZyO6Fp5iA/exec";
+
+// ─── UTILS ───────────────────────────────────
+function getPredikat(v) {
+  if (!v || isNaN(v)) return "—";
+  v = parseFloat(v);
+  if (v >= 90) return "A";
+  if (v >= 75) return "B";
+  if (v >= 60) return "C";
+  return "D";
+}
+function getPredClass(p) {
+  return {A:"pred-a",B:"pred-b",C:"pred-c",D:"pred-d"}[p] || "";
+}
+function getScoreClass(v) {
+  v = parseFloat(v);
+  if (v >= 75) return "score-high";
+  if (v >= 60) return "score-mid";
+  return "score-low";
+}
+function getPredBadgeStyle(p) {
+  const s = {
+    A:"background:#EAF3DE;color:#27500A",
+    B:"background:#E6F1FB;color:#0C447C",
+    C:"background:#FAEEDA;color:#633806",
+    D:"background:#FCEBEB;color:#791F1F"
+  };
+  return s[p] || "background:#f0f0f0;color:#888";
+}
+
+function showToast(msg, isError=false) {
+  const t = document.getElementById("toast");
+  t.classList.toggle("error", isError);
+  document.getElementById("toast-msg").textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 3000);
+}
+
+// ─── AUTH ─────────────────────────────────────
+// Tambah/ubah akun guru di sini: { "username": "password" }
+const GURU_ACCOUNTS = {
+  "guru": "meyola123"
+};
+
+let isGuruLoggedIn = false;
+let currentGuru = "";
+
+function showLoginModal() {
+  document.getElementById("login-user").value = "";
+  document.getElementById("login-pass").value = "";
+  document.getElementById("login-error").classList.remove("show");
+  document.getElementById("modal-login").classList.add("show");
+  setTimeout(() => document.getElementById("login-user").focus(), 250);
+}
+
+function closeLoginModal() {
+  document.getElementById("modal-login").classList.remove("show");
+}
+
+function handleModalBackdrop(e) {
+  if (e.target === document.getElementById("modal-login")) closeLoginModal();
+}
+
+function doLogin() {
+  const user = document.getElementById("login-user").value.trim();
+  const pass = document.getElementById("login-pass").value;
+  const errEl = document.getElementById("login-error");
+  if (GURU_ACCOUNTS[user] && GURU_ACCOUNTS[user] === pass) {
+    isGuruLoggedIn = true;
+    currentGuru = user;
+    closeLoginModal();
+    // Tampilkan chip user di topbar
+    const initials = user.slice(0,2).toUpperCase();
+    document.getElementById("topbar-user-avatar").textContent = initials;
+    document.getElementById("topbar-user-name").textContent = user;
+    document.getElementById("topbar-user").style.display = "flex";
+    // Masuk ke view guru
+    document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+    document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+    document.getElementById("view-guru").classList.add("active");
+    document.getElementById("btn-nav-guru").classList.add("active");
+    // Pre-fill nama guru jika field kosong
+    const fGuru = document.getElementById("f-guru");
+    if (!fGuru.value) fGuru.value = user;
+    showToast("Selamat datang, " + user + "!");
+  } else {
+    errEl.classList.add("show");
+    document.getElementById("login-pass").value = "";
+    document.getElementById("login-pass").focus();
+  }
+}
+
+function doLogout() {
+  isGuruLoggedIn = false;
+  currentGuru = "";
+  document.getElementById("topbar-user").style.display = "none";
+  // Kembali ke view siswa
+  document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+  document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+  document.getElementById("view-siswa").classList.add("active");
+  document.getElementById("btn-nav-siswa").classList.add("active");
+  showToast("Berhasil keluar.");
+}
+
+// ─── NAV ─────────────────────────────────────
+function switchView(view, btn) {
+  if (view === "guru" && !isGuruLoggedIn) {
+    showLoginModal();
+    return;
+  }
+  document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+  document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+  document.getElementById("view-"+view).classList.add("active");
+  btn.classList.add("active");
+  if (view === "rekap") loadRekap();
+}
+
+// ─── AUTO PREDIKAT ────────────────────────────
+function autoPredikat(num) {
+  const val = parseFloat(document.getElementById("n"+num).value);
+  const apEl = document.getElementById("ap"+num);
+  const predSelect = document.getElementById("p"+num);
+  if (!isNaN(val) && val >= 0 && val <= 100) {
+    const p = getPredikat(val);
+    apEl.textContent = p;
+    apEl.style.cssText = getPredBadgeStyle(p).replace("background","background-color").replace("color","color");
+    apEl.style.background = getPredBadgeStyle(p).split(";")[0].split(":")[1];
+    apEl.style.color = getPredBadgeStyle(p).split(";")[1].split(":")[1];
+    predSelect.value = p;
+  } else {
+    apEl.textContent = "—";
+    apEl.style.background = "";
+    apEl.style.color = "";
+  }
+}
+
+// ─── CARI NILAI (SISWA) ───────────────────────
+async function cariNilai() {
+  const nama = document.getElementById("search-nama").value.trim();
+  if (!nama) { showToast("Masukkan nama dulu ya!", true); return; }
+  const res = document.getElementById("nilai-result");
+  res.innerHTML = '<div class="loader"><div class="spinner"></div> Mencari nilai...</div>';
+  res.classList.add("show");
+  try {
+    const r = await fetch(`${APPS_SCRIPT_URL}?action=getSiswa&nama=${encodeURIComponent(nama)}`);
+    const json = await r.json();
+    if (!json.ok || json.data.length === 0) {
+      res.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><p>Nama "<strong>${nama}</strong>" tidak ditemukan.<br>Coba nama lengkap atau minta guru untuk input nilai dulu.</p></div>`;
+      return;
+    }
+    const d = json.data[json.data.length-1];
+    const initials = d.nama.split(" ").map(w=>w[0]).slice(0,2).join("").toUpperCase();
+    const babsHtml = [1,2,3,4].map(i => {
+      const n = d[`nilai_bab${i}`];
+      const p = d[`pred_bab${i}`] || getPredikat(n);
+      const c = d[`catatan_bab${i}`];
+      return `<div class="bab-tile">
+        <div class="bab-tile-header">
+          <span class="bab-pill">BAB ${i}</span>
+          <span class="bab-tile-name">Materi ${i}</span>
+        </div>
+        <div class="bab-score-row">
+          <span class="bab-score">${n || "—"}</span>
+          ${n ? `<span class="bab-pred ${getPredClass(p)}">${p}</span>` : ""}
+        </div>
+        ${c ? `<div class="bab-catatan">${c}</div>` : ""}
+      </div>`;
+    }).join("");
+    const statusCls = d.status === "Tuntas" ? "status-tuntas" : "status-belum";
+    res.innerHTML = `
+      <div class="student-profile">
+        <div class="profile-header">
+          <div class="profile-avatar">${initials}</div>
+          <div>
+            <div class="profile-name">${d.nama}</div>
+            <div class="profile-kelas">${d.kelas} &nbsp;·&nbsp; Dinilai: ${d.timestamp}</div>
+          </div>
+        </div>
+        <div class="profile-body">
+          <div class="bab-grid">${babsHtml}</div>
+          <div class="summary-strip">
+            <div class="sum-item">
+              <div class="sum-val">${d.rata_rata || "—"}</div>
+              <div class="sum-lbl">Rata-rata</div>
+            </div>
+            <div class="sum-divider"></div>
+            <div class="sum-item">
+              <div class="sum-val">${d.pred_akhir || getPredikat(d.rata_rata)}</div>
+              <div class="sum-lbl">Predikat</div>
+            </div>
+            <div class="sum-divider"></div>
+            <div class="sum-item">
+              <span class="status-badge ${statusCls}">${d.status || "—"}</span>
+              <div class="sum-lbl" style="margin-top:6px;">Status</div>
+            </div>
+            ${d.guru_penilai ? `<div class="sum-divider"></div><div class="sum-item"><div class="sum-val" style="font-size:13px">${d.guru_penilai}</div><div class="sum-lbl">Guru Penilai</div></div>` : ""}
+          </div>
+        </div>
+      </div>`;
+  } catch(e) {
+    res.innerHTML = `<div class="empty-state"><p>Koneksi gagal. Pastikan Apps Script sudah di-deploy dan URL sudah diisi di kode.</p></div>`;
+  }
+}
+
+// ─── SUBMIT NILAI (GURU) ──────────────────────
+async function submitNilai() {
+  const nama = document.getElementById("f-nama").value.trim();
+  const kelas = document.getElementById("f-kelas").value;
+  if (!nama || !kelas) { showToast("Nama dan kelas wajib diisi!", true); return; }
+
+  const payload = {
+    nama, kelas,
+    nilai_bab1: document.getElementById("n1").value,
+    pred_bab1: document.getElementById("p1").value || getPredikat(document.getElementById("n1").value),
+    catatan_bab1: document.getElementById("c1").value,
+    nilai_bab2: document.getElementById("n2").value,
+    pred_bab2: document.getElementById("p2").value || getPredikat(document.getElementById("n2").value),
+    catatan_bab2: document.getElementById("c2").value,
+    nilai_bab3: document.getElementById("n3").value,
+    pred_bab3: document.getElementById("p3").value || getPredikat(document.getElementById("n3").value),
+    catatan_bab3: document.getElementById("c3").value,
+    nilai_bab4: document.getElementById("n4").value,
+    pred_bab4: document.getElementById("p4").value || getPredikat(document.getElementById("n4").value),
+    catatan_bab4: document.getElementById("c4").value,
+    guru_penilai: document.getElementById("f-guru").value
+  };
+
+  const btn = document.getElementById("btn-submit");
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner" style="border-color:#fff3;border-top-color:#fff"></div> Menyimpan...';
+
+  try {
+    const r = await fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify(payload)
+    });
+    const json = await r.json();
+    if (json.ok) {
+      showToast("Nilai berhasil disimpan ke Google Sheets!");
+      ["f-nama","f-kelas","f-guru","n1","n2","n3","n4","c1","c2","c3","c4"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el.tagName === "SELECT") el.selectedIndex = 0;
+        else el.value = "";
+      });
+      [1,2,3,4].forEach(i => {
+        const ap = document.getElementById("ap"+i);
+        ap.textContent = "—";
+        ap.style.background = ap.style.color = "";
+      });
+      loadStats();
+    } else {
+      showToast("Gagal menyimpan: " + (json.error || "Unknown error"), true);
+    }
+  } catch(e) {
+    showToast("Koneksi gagal. Cek URL Apps Script.", true);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.5 4.5L6.5 11.5L2.5 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Simpan Penilaian ke Sheets';
+  }
+}
+
+// ─── REKAP ────────────────────────────────────
+let allData = [];
+async function loadRekap() {
+  document.getElementById("table-wrap").innerHTML = '<div class="loader"><div class="spinner"></div> Memuat data...</div>';
+  try {
+    const r = await fetch(`${APPS_SCRIPT_URL}?action=getAll`);
+    const json = await r.json();
+    allData = json.data || [];
+    renderTable(allData);
+    loadStats(allData);
+  } catch(e) {
+    document.getElementById("table-wrap").innerHTML = `<div class="empty-state"><p>Gagal memuat data. Pastikan Apps Script URL sudah diisi.</p></div>`;
+  }
+}
+
+function renderTable(data) {
+  document.getElementById("rekap-count").textContent = `${data.length} siswa`;
+  if (data.length === 0) {
+    document.getElementById("table-wrap").innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 17H5a2 2 0 0 0-2 2v0a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v0a2 2 0 0 0-2-2h-4"/><path d="M12 3v14m0 0-4-4m4 4 4-4"/></svg><p>Belum ada data nilai.</p></div>`;
+    return;
+  }
+  const rows = data.map(d => {
+    const p = d.pred_akhir || getPredikat(d.rata_rata);
+    const sc = d.status === "Tuntas" ? "status-tuntas" : "status-belum";
+    return `<tr>
+      <td>${d.nama}</td>
+      <td>${d.kelas}</td>
+      <td><span class="score-val ${getScoreClass(d.nilai_bab1)}">${d.nilai_bab1||"—"}</span></td>
+      <td><span class="score-val ${getScoreClass(d.nilai_bab2)}">${d.nilai_bab2||"—"}</span></td>
+      <td><span class="score-val ${getScoreClass(d.nilai_bab3)}">${d.nilai_bab3||"—"}</span></td>
+      <td><span class="score-val ${getScoreClass(d.nilai_bab4)}">${d.nilai_bab4||"—"}</span></td>
+      <td><strong class="score-val ${getScoreClass(d.rata_rata)}">${d.rata_rata||"—"}</strong></td>
+      <td><span class="bab-pred ${getPredClass(p)}" style="font-size:12px;padding:2px 8px;border-radius:99px;font-weight:700;">${p}</span></td>
+      <td><span class="status-badge ${sc}" style="font-size:11px;padding:3px 10px;">${d.status||"—"}</span></td>
+    </tr>`;
+  }).join("");
+  document.getElementById("table-wrap").innerHTML = `
+    <table>
+      <thead><tr>
+        <th>Nama Siswa</th><th>Kelas</th>
+        <th>Bab 1</th><th>Bab 2</th><th>Bab 3</th><th>Bab 4</th>
+        <th>Rata-rata</th><th>Predikat</th><th>Status</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
+function filterRekap(filter, btn) {
+  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  let filtered = allData;
+  if (filter === "tuntas") filtered = allData.filter(d => d.status === "Tuntas");
+  else if (filter === "belum") filtered = allData.filter(d => d.status === "Belum Tuntas");
+  else if (filter === "A" || filter === "B") filtered = allData.filter(d => (d.pred_akhir || getPredikat(d.rata_rata)) === filter);
+  renderTable(filtered);
+}
+
+function loadStats(data) {
+  if (!data) {
+    fetch(`${APPS_SCRIPT_URL}?action=getAll`).then(r=>r.json()).then(j => {
+      data = j.data || [];
+      updateStats(data);
+    }).catch(()=>{});
+  } else {
+    updateStats(data);
+  }
+}
+
+function updateStats(data) {
+  document.getElementById("stat-total").textContent = data.length;
+  const tuntas = data.filter(d => d.status === "Tuntas").length;
+  document.getElementById("stat-tuntas").textContent = tuntas;
+  const avgs = data.map(d => parseFloat(d.rata_rata)).filter(v => !isNaN(v));
+  const avg = avgs.length ? (avgs.reduce((a,b)=>a+b,0)/avgs.length).toFixed(1) : "—";
+  document.getElementById("stat-avg").textContent = avg;
+}
+
+// Init
+loadStats();
+</script>
+</body>
+</html>
