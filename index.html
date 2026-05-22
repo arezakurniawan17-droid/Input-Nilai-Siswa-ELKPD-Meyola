@@ -622,6 +622,49 @@ tbody tr:hover td { background: var(--blue-10); }
 }
 .btn-logout:hover { background: rgba(255,255,255,0.1); color: var(--white); }
 .nav-lock { display: inline-flex; vertical-align: middle; margin-right: 3px; opacity: 0.55; }
+
+/* ── EDIT MODAL ── */
+.modal-edit-box { max-width: 560px; }
+.modal-body-scroll { max-height: 72vh; overflow-y: auto; padding: 20px 24px 24px; }
+.modal-body-scroll .bab-section { margin-bottom: 10px; }
+.btn-edit-row {
+  padding: 4px 10px;
+  background: var(--blue-50);
+  color: var(--blue-700);
+  border: 1px solid var(--blue-100);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--font);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.btn-edit-row:hover { background: var(--blue-600); color: var(--white); border-color: var(--blue-600); }
+.edit-save-btn {
+  width: 100%;
+  height: 46px;
+  background: var(--blue-600);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 700;
+  font-family: var(--font);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.15s, transform 0.1s;
+  margin-bottom: 8px;
+}
+.edit-save-btn:hover { background: var(--blue-700); }
+.edit-save-btn:active { transform: scale(0.99); }
+.edit-save-btn:disabled { background: var(--gray-200); color: var(--gray-400); cursor: not-allowed; }
 </style>
 </head>
 <body>
@@ -896,6 +939,148 @@ tbody tr:hover td { background: var(--blue-10); }
         Masuk
       </button>
       <button class="btn-cancel" onclick="closeLoginModal()">Batal</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT NILAI MODAL -->
+<div class="modal-overlay" id="modal-edit" onclick="handleEditBackdrop(event)">
+  <div class="modal-box modal-edit-box">
+    <div class="modal-header">
+      <div class="modal-title">Edit Nilai Siswa</div>
+      <div class="modal-sub" id="edit-modal-sub">Ubah data nilai siswa</div>
+    </div>
+    <div class="modal-body-scroll">
+      <input type="hidden" id="edit-rowIndex">
+      <div class="form-row">
+        <div class="field-group">
+          <label class="field-label">Nama Siswa</label>
+          <input class="field-input" type="text" id="edit-nama" style="opacity:.65;cursor:default" readonly>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Kelas <span class="req">*</span></label>
+          <select class="field-select" id="edit-kelas">
+            <option>Kelas X</option>
+            <option>Kelas XI</option>
+            <option>Kelas XII</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- BAB 1 -->
+      <div class="bab-section">
+        <div class="bab-section-header">
+          <span class="bab-pill">BAB 1</span>
+          <span class="bab-section-name">Materi Bab 1</span>
+          <span class="bab-auto-pred" id="eap1">—</span>
+        </div>
+        <div class="form-row">
+          <div class="field-group">
+            <label class="field-label">Nilai <span class="req">*</span></label>
+            <input class="field-input" type="number" id="en1" min="0" max="100" placeholder="0–100" oninput="autoEditPredikat(1)">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Predikat</label>
+            <select class="field-select" id="ep1">
+              <option value="">Otomatis...</option>
+              <option>A</option><option>B</option><option>C</option><option>D</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Catatan Guru</label>
+          <textarea class="field-textarea" id="ec1" placeholder="Catatan..."></textarea>
+        </div>
+      </div>
+      <!-- BAB 2 -->
+      <div class="bab-section">
+        <div class="bab-section-header">
+          <span class="bab-pill">BAB 2</span>
+          <span class="bab-section-name">Materi Bab 2</span>
+          <span class="bab-auto-pred" id="eap2">—</span>
+        </div>
+        <div class="form-row">
+          <div class="field-group">
+            <label class="field-label">Nilai <span class="req">*</span></label>
+            <input class="field-input" type="number" id="en2" min="0" max="100" placeholder="0–100" oninput="autoEditPredikat(2)">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Predikat</label>
+            <select class="field-select" id="ep2">
+              <option value="">Otomatis...</option>
+              <option>A</option><option>B</option><option>C</option><option>D</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Catatan Guru</label>
+          <textarea class="field-textarea" id="ec2" placeholder="Catatan..."></textarea>
+        </div>
+      </div>
+      <!-- BAB 3 -->
+      <div class="bab-section">
+        <div class="bab-section-header">
+          <span class="bab-pill">BAB 3</span>
+          <span class="bab-section-name">Materi Bab 3</span>
+          <span class="bab-auto-pred" id="eap3">—</span>
+        </div>
+        <div class="form-row">
+          <div class="field-group">
+            <label class="field-label">Nilai <span class="req">*</span></label>
+            <input class="field-input" type="number" id="en3" min="0" max="100" placeholder="0–100" oninput="autoEditPredikat(3)">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Predikat</label>
+            <select class="field-select" id="ep3">
+              <option value="">Otomatis...</option>
+              <option>A</option><option>B</option><option>C</option><option>D</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Catatan Guru</label>
+          <textarea class="field-textarea" id="ec3" placeholder="Catatan..."></textarea>
+        </div>
+      </div>
+      <!-- BAB 4 -->
+      <div class="bab-section">
+        <div class="bab-section-header">
+          <span class="bab-pill">BAB 4</span>
+          <span class="bab-section-name">Materi Bab 4</span>
+          <span class="bab-auto-pred" id="eap4">—</span>
+        </div>
+        <div class="form-row">
+          <div class="field-group">
+            <label class="field-label">Nilai <span class="req">*</span></label>
+            <input class="field-input" type="number" id="en4" min="0" max="100" placeholder="0–100" oninput="autoEditPredikat(4)">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Predikat</label>
+            <select class="field-select" id="ep4">
+              <option value="">Otomatis...</option>
+              <option>A</option><option>B</option><option>C</option><option>D</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Catatan Guru</label>
+          <textarea class="field-textarea" id="ec4" placeholder="Catatan..."></textarea>
+        </div>
+      </div>
+
+      <div class="form-divider"></div>
+      <div class="form-row single" style="margin-bottom:16px">
+        <div class="field-group">
+          <label class="field-label">Guru Penilai</label>
+          <input class="field-input" type="text" id="edit-guru" placeholder="Nama guru...">
+        </div>
+      </div>
+
+      <button class="edit-save-btn" id="edit-save-btn" onclick="submitEdit()">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M13.5 4.5L6.5 11.5L2.5 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Simpan Perubahan
+      </button>
+      <button class="btn-cancel" onclick="closeEditModal()">Batal</button>
     </div>
   </div>
 </div>
@@ -1193,9 +1378,16 @@ function renderTable(data) {
     document.getElementById("table-wrap").innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 17H5a2 2 0 0 0-2 2v0a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v0a2 2 0 0 0-2-2h-4"/><path d="M12 3v14m0 0-4-4m4 4 4-4"/></svg><p>Belum ada data nilai.</p></div>`;
     return;
   }
+  const showEdit = isGuruLoggedIn;
   const rows = data.map(d => {
     const p = d.pred_akhir || getPredikat(d.rata_rata);
     const sc = d.status === "Tuntas" ? "status-tuntas" : "status-belum";
+    const editBtn = showEdit
+      ? `<td><button class="btn-edit-row" onclick='openEditModal(${d.rowIndex})'>
+           <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M11.5 2.5a2.121 2.121 0 0 1 3 3L5 15H2v-3L11.5 2.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+           Edit
+         </button></td>`
+      : "";
     return `<tr>
       <td>${d.nama}</td>
       <td>${d.kelas}</td>
@@ -1206,17 +1398,114 @@ function renderTable(data) {
       <td><strong class="score-val ${getScoreClass(d.rata_rata)}">${d.rata_rata||"—"}</strong></td>
       <td><span class="bab-pred ${getPredClass(p)}" style="font-size:12px;padding:2px 8px;border-radius:99px;font-weight:700;">${p}</span></td>
       <td><span class="status-badge ${sc}" style="font-size:11px;padding:3px 10px;">${d.status||"—"}</span></td>
+      ${editBtn}
     </tr>`;
   }).join("");
+  const aksiHeader = showEdit ? "<th>Aksi</th>" : "";
   document.getElementById("table-wrap").innerHTML = `
     <table>
       <thead><tr>
         <th>Nama Siswa</th><th>Kelas</th>
         <th>Bab 1</th><th>Bab 2</th><th>Bab 3</th><th>Bab 4</th>
-        <th>Rata-rata</th><th>Predikat</th><th>Status</th>
+        <th>Rata-rata</th><th>Predikat</th><th>Status</th>${aksiHeader}
       </tr></thead>
       <tbody>${rows}</tbody>
     </table>`;
+}
+
+// ─── EDIT NILAI ───────────────────────────────
+function openEditModal(rowIndex) {
+  const d = allData.find(x => x.rowIndex === rowIndex);
+  if (!d) return;
+  document.getElementById("edit-rowIndex").value = rowIndex;
+  document.getElementById("edit-modal-sub").textContent = "Mengubah nilai: " + d.nama;
+  document.getElementById("edit-nama").value = d.nama;
+  document.getElementById("edit-kelas").value = d.kelas;
+  document.getElementById("edit-guru").value = d.guru_penilai || currentGuru;
+  [1,2,3,4].forEach(i => {
+    document.getElementById("en"+i).value = d["nilai_bab"+i] || "";
+    document.getElementById("ep"+i).value = d["pred_bab"+i] || "";
+    document.getElementById("ec"+i).value = d["catatan_bab"+i] || "";
+    const ap = document.getElementById("eap"+i);
+    const p = d["pred_bab"+i] || getPredikat(d["nilai_bab"+i]);
+    if (d["nilai_bab"+i]) {
+      ap.textContent = p;
+      ap.style.background = getPredBadgeStyle(p).split(";")[0].split(":")[1];
+      ap.style.color = getPredBadgeStyle(p).split(";")[1].split(":")[1];
+    } else {
+      ap.textContent = "—"; ap.style.background = ""; ap.style.color = "";
+    }
+  });
+  document.getElementById("modal-edit").classList.add("show");
+}
+
+function closeEditModal() {
+  document.getElementById("modal-edit").classList.remove("show");
+}
+
+function handleEditBackdrop(e) {
+  if (e.target === document.getElementById("modal-edit")) closeEditModal();
+}
+
+function autoEditPredikat(num) {
+  const val = parseFloat(document.getElementById("en"+num).value);
+  const apEl = document.getElementById("eap"+num);
+  const predSelect = document.getElementById("ep"+num);
+  if (!isNaN(val) && val >= 0 && val <= 100) {
+    const p = getPredikat(val);
+    apEl.textContent = p;
+    apEl.style.background = getPredBadgeStyle(p).split(";")[0].split(":")[1];
+    apEl.style.color = getPredBadgeStyle(p).split(";")[1].split(":")[1];
+    predSelect.value = p;
+  } else {
+    apEl.textContent = "—"; apEl.style.background = ""; apEl.style.color = "";
+  }
+}
+
+async function submitEdit() {
+  const rowIndex = parseInt(document.getElementById("edit-rowIndex").value);
+  const nama = document.getElementById("edit-nama").value.trim();
+  const kelas = document.getElementById("edit-kelas").value;
+  if (!kelas) { showToast("Kelas wajib dipilih!", true); return; }
+
+  const payload = {
+    action: "update",
+    rowIndex, nama, kelas,
+    nilai_bab1: document.getElementById("en1").value,
+    pred_bab1: document.getElementById("ep1").value || getPredikat(document.getElementById("en1").value),
+    catatan_bab1: document.getElementById("ec1").value,
+    nilai_bab2: document.getElementById("en2").value,
+    pred_bab2: document.getElementById("ep2").value || getPredikat(document.getElementById("en2").value),
+    catatan_bab2: document.getElementById("ec2").value,
+    nilai_bab3: document.getElementById("en3").value,
+    pred_bab3: document.getElementById("ep3").value || getPredikat(document.getElementById("en3").value),
+    catatan_bab3: document.getElementById("ec3").value,
+    nilai_bab4: document.getElementById("en4").value,
+    pred_bab4: document.getElementById("ep4").value || getPredikat(document.getElementById("en4").value),
+    catatan_bab4: document.getElementById("ec4").value,
+    guru_penilai: document.getElementById("edit-guru").value
+  };
+
+  const btn = document.getElementById("edit-save-btn");
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner" style="border-color:#fff3;border-top-color:#fff"></div> Menyimpan...';
+
+  try {
+    const r = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+    const json = await r.json();
+    if (json.ok) {
+      showToast("Nilai berhasil diperbarui!");
+      closeEditModal();
+      loadRekap();
+    } else {
+      showToast("Gagal: " + (json.error || "Unknown error"), true);
+    }
+  } catch(e) {
+    showToast("Koneksi gagal.", true);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M13.5 4.5L6.5 11.5L2.5 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Simpan Perubahan';
+  }
 }
 
 function filterRekap(filter, btn) {
