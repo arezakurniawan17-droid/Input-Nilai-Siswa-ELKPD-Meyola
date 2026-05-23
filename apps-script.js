@@ -18,6 +18,15 @@ function doGet(e) {
 
     const headers = ["timestamp","nama","kelas","nilai_bab1","pred_bab1","catatan_bab1","nilai_bab2","pred_bab2","catatan_bab2","nilai_bab3","pred_bab3","catatan_bab3","nilai_bab4","pred_bab4","catatan_bab4","rata_rata","pred_akhir","status","guru_penilai"];
 
+    if (action === "delete") {
+      const rowIndex = parseInt(e.parameter.rowIndex);
+      if (isNaN(rowIndex) || rowIndex < 2) return json({ ok: false, error: "rowIndex tidak valid: " + e.parameter.rowIndex });
+      const lastRow = sheet.getLastRow();
+      if (rowIndex > lastRow) return json({ ok: false, error: "Baris " + rowIndex + " tidak ada (lastRow=" + lastRow + ")" });
+      sheet.deleteRow(rowIndex);
+      return json({ ok: true, message: "Data berhasil dihapus!" });
+    }
+
     if (action === "getAll") {
       const data = sheet.getDataRange().getValues();
       const rows = data.slice(1).map((r, i) => {

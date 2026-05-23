@@ -1468,10 +1468,7 @@ async function deleteRow(rowIndex) {
   const nama = d ? d.nama : "kelompok ini";
   if (!confirm(`Hapus data ${nama}? Tindakan ini tidak bisa dibatalkan.`)) return;
   try {
-    const r = await fetch(APPS_SCRIPT_URL, {
-      method: "POST",
-      body: JSON.stringify({ action: "delete", rowIndex })
-    });
+    const r = await fetch(`${APPS_SCRIPT_URL}?action=delete&rowIndex=${rowIndex}`);
     const json = await r.json();
     if (json.ok) {
       showToast("Data berhasil dihapus!");
