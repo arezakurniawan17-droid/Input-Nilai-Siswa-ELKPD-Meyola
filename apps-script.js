@@ -48,6 +48,14 @@ function doPost(e) {
   const pred = avg !== "" ? getP(avg) : "";
   const status = avg !== "" ? (avg >= 75 ? "Tuntas" : "Belum Tuntas") : "";
 
+  // DELETE: hapus baris
+  if (payload.action === "delete") {
+    const rowIndex = parseInt(payload.rowIndex);
+    sheet.deleteRow(rowIndex);
+    return ContentService.createTextOutput(JSON.stringify({ ok: true, message: "Data berhasil dihapus!" }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
   // UPDATE: edit baris yang sudah ada
   if (payload.action === "update") {
     const rowIndex = parseInt(payload.rowIndex);

@@ -644,6 +644,24 @@ tbody tr:hover td { background: var(--blue-10); }
   white-space: nowrap;
 }
 .btn-edit-row:hover { background: var(--blue-600); color: var(--white); border-color: var(--blue-600); }
+.btn-delete-row {
+  padding: 4px 10px;
+  background: var(--red-50);
+  color: var(--red-700);
+  border: 1px solid #f5c6c6;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--font);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.15s;
+  white-space: nowrap;
+  margin-left: 4px;
+}
+.btn-delete-row:hover { background: #C62828; color: var(--white); border-color: #C62828; }
 .edit-save-btn {
   width: 100%;
   height: 46px;
@@ -708,7 +726,7 @@ tbody tr:hover td { background: var(--blue-10); }
     <div class="hero-stats">
       <div class="hero-stat">
         <div class="hero-stat-val" id="stat-total">—</div>
-        <div class="hero-stat-lbl">Total siswa</div>
+        <div class="hero-stat-lbl">Total kelompok</div>
       </div>
       <div class="hero-stat">
         <div class="hero-stat-val" id="stat-tuntas">—</div>
@@ -729,9 +747,21 @@ tbody tr:hover td { background: var(--blue-10); }
   <div class="view active" id="view-siswa">
     <div class="role-card">
       <div class="role-title">Cek Nilai Kamu</div>
-      <div class="role-sub">Masukkan nama kamu untuk melihat nilai per bab</div>
+      <div class="role-sub">Pilih kelompok kamu untuk melihat nilai per bab</div>
       <div class="search-row">
-        <input class="search-input" type="text" id="search-nama" placeholder="Ketik nama kamu..." onkeydown="if(event.key==='Enter')cariNilai()">
+        <select class="search-input" id="search-nama" style="cursor:pointer">
+          <option value="">Pilih kelompok kamu...</option>
+          <option>Kelompok 1</option>
+          <option>Kelompok 2</option>
+          <option>Kelompok 3</option>
+          <option>Kelompok 4</option>
+          <option>Kelompok 5</option>
+          <option>Kelompok 6</option>
+          <option>Kelompok 7</option>
+          <option>Kelompok 8</option>
+          <option>Kelompok 9</option>
+          <option>Kelompok 10</option>
+        </select>
         <button class="btn-primary" onclick="cariNilai()">Cari</button>
       </div>
     </div>
@@ -753,16 +783,29 @@ tbody tr:hover td { background: var(--blue-10); }
       <div class="form-body">
         <div class="form-row">
           <div class="field-group">
-            <label class="field-label">Nama Siswa <span class="req">*</span></label>
-            <input class="field-input" type="text" id="f-nama" placeholder="Nama lengkap..." />
+            <label class="field-label">Kelompok <span class="req">*</span></label>
+            <select class="field-select" id="f-nama">
+              <option value="">Pilih kelompok...</option>
+              <option>Kelompok 1</option>
+              <option>Kelompok 2</option>
+              <option>Kelompok 3</option>
+              <option>Kelompok 4</option>
+              <option>Kelompok 5</option>
+              <option>Kelompok 6</option>
+              <option>Kelompok 7</option>
+              <option>Kelompok 8</option>
+              <option>Kelompok 9</option>
+              <option>Kelompok 10</option>
+            </select>
           </div>
           <div class="field-group">
             <label class="field-label">Kelas <span class="req">*</span></label>
             <select class="field-select" id="f-kelas">
               <option value="">Pilih kelas...</option>
-              <option>Kelas X</option>
-              <option>Kelas XI</option>
-              <option>Kelas XII</option>
+              <option>Kelas 4A</option>
+              <option>Kelas 4B</option>
+              <option>Kelas 4C</option>
+              <option>Kelas 4D</option>
             </select>
           </div>
         </div>
@@ -889,7 +932,7 @@ tbody tr:hover td { background: var(--blue-10); }
   <div class="view" id="view-rekap">
     <div class="rekap-card">
       <div class="rekap-header">
-        <div class="rekap-title">Rekap Nilai Semua Siswa</div>
+        <div class="rekap-title">Rekap Nilai Semua Kelompok</div>
         <div class="rekap-count" id="rekap-count">Memuat...</div>
       </div>
       <div class="filter-bar">
@@ -954,15 +997,16 @@ tbody tr:hover td { background: var(--blue-10); }
       <input type="hidden" id="edit-rowIndex">
       <div class="form-row">
         <div class="field-group">
-          <label class="field-label">Nama Siswa</label>
+          <label class="field-label">Kelompok</label>
           <input class="field-input" type="text" id="edit-nama" style="opacity:.65;cursor:default" readonly>
         </div>
         <div class="field-group">
           <label class="field-label">Kelas <span class="req">*</span></label>
           <select class="field-select" id="edit-kelas">
-            <option>Kelas X</option>
-            <option>Kelas XI</option>
-            <option>Kelas XII</option>
+            <option>Kelas 4A</option>
+            <option>Kelas 4B</option>
+            <option>Kelas 4C</option>
+            <option>Kelas 4D</option>
           </select>
         </div>
       </div>
@@ -1373,7 +1417,7 @@ async function loadRekap() {
 }
 
 function renderTable(data) {
-  document.getElementById("rekap-count").textContent = `${data.length} siswa`;
+  document.getElementById("rekap-count").textContent = `${data.length} kelompok`;
   if (data.length === 0) {
     document.getElementById("table-wrap").innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 17H5a2 2 0 0 0-2 2v0a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v0a2 2 0 0 0-2-2h-4"/><path d="M12 3v14m0 0-4-4m4 4 4-4"/></svg><p>Belum ada data nilai.</p></div>`;
     return;
@@ -1382,11 +1426,17 @@ function renderTable(data) {
   const rows = data.map(d => {
     const p = d.pred_akhir || getPredikat(d.rata_rata);
     const sc = d.status === "Tuntas" ? "status-tuntas" : "status-belum";
-    const editBtn = showEdit
-      ? `<td><button class="btn-edit-row" onclick='openEditModal(${d.rowIndex})'>
-           <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M11.5 2.5a2.121 2.121 0 0 1 3 3L5 15H2v-3L11.5 2.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-           Edit
-         </button></td>`
+    const aksiBtn = showEdit
+      ? `<td style="white-space:nowrap">
+           <button class="btn-edit-row" onclick='openEditModal(${d.rowIndex})'>
+             <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M11.5 2.5a2.121 2.121 0 0 1 3 3L5 15H2v-3L11.5 2.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+             Edit
+           </button>
+           <button class="btn-delete-row" onclick='deleteRow(${d.rowIndex})'>
+             <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><polyline points="3 4 13 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M5 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1M6 7v5M10 7v5M4 4l1 9a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1l1-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+             Hapus
+           </button>
+         </td>`
       : "";
     return `<tr>
       <td>${d.nama}</td>
@@ -1398,19 +1448,40 @@ function renderTable(data) {
       <td><strong class="score-val ${getScoreClass(d.rata_rata)}">${d.rata_rata||"—"}</strong></td>
       <td><span class="bab-pred ${getPredClass(p)}" style="font-size:12px;padding:2px 8px;border-radius:99px;font-weight:700;">${p}</span></td>
       <td><span class="status-badge ${sc}" style="font-size:11px;padding:3px 10px;">${d.status||"—"}</span></td>
-      ${editBtn}
+      ${aksiBtn}
     </tr>`;
   }).join("");
   const aksiHeader = showEdit ? "<th>Aksi</th>" : "";
   document.getElementById("table-wrap").innerHTML = `
     <table>
       <thead><tr>
-        <th>Nama Siswa</th><th>Kelas</th>
+        <th>Kelompok</th><th>Kelas</th>
         <th>Bab 1</th><th>Bab 2</th><th>Bab 3</th><th>Bab 4</th>
         <th>Rata-rata</th><th>Predikat</th><th>Status</th>${aksiHeader}
       </tr></thead>
       <tbody>${rows}</tbody>
     </table>`;
+}
+
+async function deleteRow(rowIndex) {
+  const d = allData.find(x => x.rowIndex === rowIndex);
+  const nama = d ? d.nama : "kelompok ini";
+  if (!confirm(`Hapus data ${nama}? Tindakan ini tidak bisa dibatalkan.`)) return;
+  try {
+    const r = await fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify({ action: "delete", rowIndex })
+    });
+    const json = await r.json();
+    if (json.ok) {
+      showToast("Data berhasil dihapus!");
+      loadRekap();
+    } else {
+      showToast("Gagal menghapus: " + (json.error || "Unknown error"), true);
+    }
+  } catch(e) {
+    showToast("Koneksi gagal.", true);
+  }
 }
 
 // ─── EDIT NILAI ───────────────────────────────
